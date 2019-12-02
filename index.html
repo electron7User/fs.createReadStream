@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Hello World!</title>
+	<style>
+		.image {
+			width: 150px;
+			height: 150px;
+		}
+	</style>
+</head>
+<body>
+	<div class="image"><img src="custom://electron/static/test1.png" alt="Test image" style="display: none;" onload="showImage(this);"></div>
+	<div class="image"><img src="custom://electron/static/test2.png" alt="Test image" style="display: none;" onload="showImage(this);"></div>
+	<div class="image"><img src="custom://electron/static/test3.png" alt="Test image" style="display: none;" onload="showImage(this);"></div>
+	<div class="image"><img src="custom://electron/static/test4.png" alt="Test image" style="display: none;" onload="showImage(this);"></div>
+	<div class="image"><img src="custom://electron/static/test5.png" alt="Test image" style="display: none;" onload="showImage(this);"></div>
+	<script>
+		function showImage(image) {
+			image.style.display = 'block';
+		}
+		
+	</script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+node_modules/*
+dist-electron/*
+yarn.lock
+yarn-error.log

@@ -1,0 +1,20 @@
+{
+  "directories": {
+    "output": "dist-electron/"
+  },
+  "files": [
+    "*.js",
+    "node_modules/",
+    "*.png",
+    "*.html"
+  ],
+  "protocols": [{
+    "name": "custom",
+    "schemes": ["custom"]
+  }],
+  "mac": {
+    "target": [
+      "dmg"
+    ]
+  }
+}
