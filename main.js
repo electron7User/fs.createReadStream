@@ -10,6 +10,7 @@ let mainWindow;
 
 protocol.registerSchemesAsPrivileged([
 	{scheme: 'custom', privileges: {standard: true, secure: true}},
+	{scheme: 'customfile', privileges: {standard: true, secure: true}},
 ]);
 
 function createWindow () {
@@ -18,16 +19,46 @@ function createWindow () {
 	protocol.registerStreamProtocol("custom", (request, callback) => {
 		let requestUrl = url.parse(request.url, /*parseQueryString*/ true, /*slashesDenoteHost*/ true);
 		let filePath = requestUrl.pathname.replace(/^\/static/, path.join(__dirname).replace(/[?#&].*/, ''));
-
+		
 		console.log(filePath);
 		
-		if (filePath.endsWith(".js")) {
+		if (filePath.endsWith(".mp4")) {
+			let options = {};
+			let contentLength = 0;
+			const range = request.headers.Range.replace('bytes=', '').split('-');
+			if (range.length !== 2) {
+				// No range header or unknown range header format, read whole file
+				contentLength = fs.statSync(filePath).size;
+			} else {
+				let start = +range[0];
+				
+				// Generate options object to tell createReadStream which parts to read
+				if (range[1].length > 0) {
+					options = {start: start, end: +range[1]};
+					contentLength = +range[1] - start;
+				} else {
+					options = {start: start};
+					contentLength = fs.statSync(filePath).size - start;
+				}
+			}
+
+			let stream = fs.createReadStream(filePath, options);
+
+			// Here, the stream could be modified, e.g. via stream.pipe(...)
+			// without having to process the whole file before starting to play it.
+			// However, even when only passing the stream to the browser, 
+			// the video cannot be viewed anymore
+
+			// This _did_ work in electron 6, but does not in electron 7/8/9.
+			// You can try it by replacing the electron version with ^6.0.0 in package.json
+
 			callback({
 				statusCode: 200,
 				headers: {
-					'Content-Type': 'text/plain',
+					'Content-Type': 'video/mp4',
+					'Content-Length': '' + contentLength,
 				},
-				data: fs.createReadStream(filePath)
+				data: stream
 			})
 		} else if (filePath.endsWith(".png")) {
 			callback({
@@ -48,10 +79,21 @@ function createWindow () {
 		}
 	})
 	
+	protocol.registerFileProtocol('customfile', (request, callback) => {
+		let requestUrl = url.parse(request.url, /*parseQueryString*/ true, /*slashesDenoteHost*/ true);
+		let filePath = requestUrl.pathname.replace(/^\/static/, path.join(__dirname).replace(/[?#&].*/, ''));
+		
+		console.log(filePath);
+
+		callback({
+			path: filePath
+		});
+	})
+	
 	// Create the browser window.
 	mainWindow = new BrowserWindow({
-		width: 800,
-		height: 900,
+		width: 1200,
+		height: 800,
 		webPreferences: {
 			nodeIntegration: true
 		}

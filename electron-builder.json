@@ -6,6 +6,7 @@
     "*.js",
     "node_modules/",
     "*.png",
+    "*.mp4",
     "*.html"
   ],
   "protocols": [{

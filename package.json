@@ -6,7 +6,7 @@
   },
   "main": "main.js",
   "devDependencies": {
-    "electron": "^7.1.2",
-    "electron-builder": "^21.2.0"
+    "electron": "^9.0.0",
+    "electron-builder": "^22.7.0"
   }
 }

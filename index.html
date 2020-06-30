@@ -4,23 +4,20 @@
 	<meta charset="UTF-8">
 	<title>Hello World!</title>
 	<style>
-		.image {
-			width: 150px;
-			height: 150px;
+		video {
+			height: 250px;
 		}
 	</style>
 </head>
 <body>
-	<div class="image"><img src="custom://electron/static/test1.png" alt="Test image" style="display: none;" onload="showImage(this);"></div>
-	<div class="image"><img src="custom://electron/static/test2.png" alt="Test image" style="display: none;" onload="showImage(this);"></div>
-	<div class="image"><img src="custom://electron/static/test3.png" alt="Test image" style="display: none;" onload="showImage(this);"></div>
-	<div class="image"><img src="custom://electron/static/test4.png" alt="Test image" style="display: none;" onload="showImage(this);"></div>
-	<div class="image"><img src="custom://electron/static/test5.png" alt="Test image" style="display: none;" onload="showImage(this);"></div>
-	<script>
-		function showImage(image) {
-			image.style.display = 'block';
-		}
-		
-	</script>
+	<h1>Video using stream protocol</h1>
+	<p>(did work in electron 6, but does not in electron 7/8/9)</p>
+	<video src="custom://electron/static/demo-video.mp4" controls></video>
+
+	<br /><br /><br />
+
+	<h1>Video using file protocol</h1>
+	<p>(still works, but stream cannot be modified)</p>
+	<video src="customFile://electron/static/demo-video.mp4" controls></video>
 </body>
 </html>
